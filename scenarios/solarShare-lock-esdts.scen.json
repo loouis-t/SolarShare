@@ -1,0 +1,67 @@
+{
+  "name": "solarShare locking esdts for future payments",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "solarShare-contract-provider.scen.json"
+    },
+    {
+      "step": "scCall",
+      "txId": "client-locks-esdts",
+      "tx": {
+        "from": "address:client",
+        "to": "sc:solarShare",
+        "egldValue": "1,500,000,000,000,000,000,000",
+        "function": "lock_esdt_amount",
+        "arguments": [
+          "address:provider"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:provider": {
+          "nonce": "2",
+          "balance": "1,000,000,000,000,000,000",
+          "storage": {}
+        },
+        "address:client": {
+          "nonce": "2",
+          "balance": "8,500,000,000,000,000,000,000",
+          "storage": {}
+        },
+        "address:sc_owner": {
+          "nonce": "1",
+          "balance": "1,000,000,000,000,000,000",
+          "storage": {}
+        },
+        "sc:solarShare": {
+          "nonce": "0",
+          "balance": "1,500,000,000,000,000,000,000",
+          "storage": {
+            "str:tokenIdentifier": "str:EGLD",
+            "str:providerDetails|address:provider": {
+              "0-deadline": "u64:124,000",
+              "1-kwh_price": "biguint:40,000,000,000,000,000",
+              "2-due_amount": "biguint:0"
+            },
+            "str:contractDetails|address:provider|address:client": {
+              "0-deadline": "u64:123,000",
+              "1-client_esdt_amount_locked": "biguint:1,500,000,000,000,000,000,000"
+            }
+          },
+          "code": "file:../output/solar-share.wasm"
+        }
+      }
+    }
+  ]
+}

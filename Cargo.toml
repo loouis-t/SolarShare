@@ -1,0 +1,20 @@
+[package]
+name = "solar-share"
+version = "0.0.1"
+authors = [ "Louis Travaux",]
+edition = "2018"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dev-dependencies]
+num-bigint = "0.4.2"
+num-traits = "0.2"
+hex = "0.4"
+
+[dependencies.multiversx-sc]
+version = "0.39.7"
+
+[dev-dependencies.multiversx-sc-scenario]
+version = "0.39.7"

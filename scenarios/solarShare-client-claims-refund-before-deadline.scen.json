@@ -1,0 +1,36 @@
+{
+    "name": "Claim funds before deadline",
+    "steps": [
+        {
+            "step": "externalSteps",
+            "path": "solarShare-lock-esdts-too-late.scen.json"
+        },
+        {
+            "step": "setState",
+            "currentBlockInfo": {
+                "blockTimestamp": "000,000"
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "client-claims-refund",
+            "tx": {
+                "from": "address:client",
+                "to": "sc:solarShare",
+                "function": "claim_refund",
+                "arguments": [
+                    "address:provider"
+                ],
+                "gasLimit": "100,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "4",
+                "message": "str:cannot claim before contract deadline",
+                "gas": "*",
+                "refund": "*"
+            }
+        }
+    ]
+}

@@ -1,0 +1,61 @@
+{
+    "name": "solarShare deployment test",
+    "steps": [
+        {
+            "step": "setState",
+            "accounts": {
+                "address:sc_owner": {
+                    "nonce": "0",
+                    "balance": "1,000,000,000,000,000,000"
+                }
+            },
+            "newAddresses": [
+                {
+                    "creatorAddress": "address:sc_owner",
+                    "creatorNonce": "0",
+                    "newAddress": "sc:solarShare"
+                }
+            ],
+            "currentBlockInfo": {
+                "blockTimestamp": "000,000"
+            }
+        },
+        {
+            "step": "scDeploy",
+            "txId": "deploy",
+            "tx": {
+                "from": "address:sc_owner",
+                "contractCode": "file:../output/solar-share.wasm",
+                "arguments": [
+                    "str:EGLD"
+                ],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "0",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "accounts": {
+                "address:sc_owner": {
+                    "nonce": "1",
+                    "balance": "1,000,000,000,000,000,000",
+                    "storage": {}
+                },
+                "sc:solarShare": {
+                    "nonce": "0",
+                    "balance": "0",
+                    "storage": {
+                        "str:tokenIdentifier": "str:EGLD"
+                    },
+                    "code": "file:../output/solar-share.wasm"
+                }
+            }
+        }
+    ]
+}

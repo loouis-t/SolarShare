@@ -1,0 +1,55 @@
+{
+    "name": "Trying to lock one block too late",
+    "steps": [
+        {
+            "step": "externalSteps",
+            "path": "solarShare-lock-esdts.scen.json"
+        },
+        {
+            "step": "setState",
+            "currentBlockInfo": {
+                "blockTimestamp": "123,001"
+            }
+        },
+        {
+            "step": "scCall",
+            "txId": "client-locks-esdts-after-deadline",
+            "tx": {
+                "from": "address:client",
+                "to": "sc:solarShare",
+                "egldValue": "1,500,000,000,000,000,000,000",
+                "function": "lock_esdt_amount",
+                "arguments": [
+                    "address:provider"
+                ],
+                "gasLimit": "100,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "4",
+                "message": "str:cannot lock funds for terminated contract",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scQuery",
+            "txId": "check-status",
+            "tx": {
+                "to": "sc:solarShare",
+                "function": "contract_status",
+                "arguments": [
+                    "address:provider",
+                    "address:client"
+                ]
+            },
+            "expect": {
+                "out": [
+                    "1"
+                ],
+                "status": "0"
+            }
+        }
+    ]
+}

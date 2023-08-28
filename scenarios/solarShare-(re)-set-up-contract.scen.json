@@ -1,0 +1,58 @@
+{
+  "name": "solarShare provider changes contract params : change deadline and/or kwh_price for clients",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "solarShare-set-up-contract.scen.json"
+    },
+    {
+      "step": "scCall",
+      "txId": "(re)-set-up-contract",
+      "tx": {
+        "from": "address:provider",
+        "to": "sc:solarShare",
+        "function": "set_up_contract",
+        "arguments": [
+          "40,000,000,000,000,000",
+          "u64:124,000"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:sc_owner": {
+          "nonce": "1",
+          "balance": "1,000,000,000,000,000,000",
+          "storage": {}
+        },
+        "address:provider": {
+          "nonce": "2",
+          "balance": "1,000,000,000,000,000,000",
+          "storage": {}
+        },
+        "sc:solarShare": {
+          "nonce": "0",
+          "balance": "0",
+          "storage": {
+            "str:tokenIdentifier": "str:EGLD",
+            "str:providerDetails|address:provider": {
+              "0-deadline": "u64:124,000",
+              "1-kwh_price": "biguint:40,000,000,000,000,000",
+              "2-due_amount": "biguint:0"
+            }
+          },  
+          "code": "file:../output/solar-share.wasm"
+        }
+      }
+    }
+  ]
+}
